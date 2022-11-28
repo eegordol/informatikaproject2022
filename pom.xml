@@ -4,6 +4,10 @@
   <groupId>org.dolidze</groupId>
   <artifactId>informatikaproject2022</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <properties>
+    <maven.compiler.source>19</maven.compiler.source>
+    <maven.compiler.target>19</maven.compiler.target>
+  </properties>
   <name>Archetype - informatikaproject2022</name>
   <url>http://maven.apache.org</url>
   <dependencies>
