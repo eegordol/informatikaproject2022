@@ -6,6 +6,9 @@ import io.github.humbleui.jwm.*;
 import java.util.function.Consumer;
 
 public class Application implements Consumer<Event> {
+    /**
+     * Main application window
+     */
     private final Window window;
 
     public Application() {
@@ -15,6 +18,10 @@ public class Application implements Consumer<Event> {
     }
 
 
+    /**
+     * Event handler
+     * @param event event instance
+     */
     @Override
     public void accept(Event event) {
         if (event instanceof EventWindowClose) {
