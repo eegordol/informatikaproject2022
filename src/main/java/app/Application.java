@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 public class Application implements Consumer<Event> {
     /**
-     * Main application window
+     * окно приложения
      */
     private final Window window;
 
@@ -19,8 +19,8 @@ public class Application implements Consumer<Event> {
 
 
     /**
-     * Event handler
-     * @param event event instance
+     * Обработчик событий
+     * @param event событие
      */
     @Override
     public void accept(Event event) {
