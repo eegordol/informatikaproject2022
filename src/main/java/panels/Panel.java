@@ -4,6 +4,7 @@ import io.github.humbleui.jwm.*;
 import io.github.humbleui.skija.Canvas;
 import io.github.humbleui.skija.Paint;
 import misc.CoordinateSystem2i;
+import misc.Vector2i;
 
 import java.util.function.Consumer;
 
@@ -30,6 +31,18 @@ public abstract class Panel implements Consumer<Event> {
      * цвет подложки
      */
     protected final int backgroundColor;
+    /**
+     * последнее движение мыши
+     */
+    protected Vector2i lastMove = new Vector2i(0, 0);
+    /**
+     * было ли оно внутри панели
+     */
+    protected boolean lastInside = false;
+    /**
+     * последняя СК окна
+     */
+    protected CoordinateSystem2i lastWindowCS;
 
     /**
      * Конструктор панели
