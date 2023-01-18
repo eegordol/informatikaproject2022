@@ -1,11 +1,10 @@
-
 package panels;
 
 import io.github.humbleui.jwm.Window;
 import io.github.humbleui.skija.Canvas;
 import misc.CoordinateSystem2i;
 
-public abstract class GridPanel extends Panel{
+public abstract class GridPanel extends Panel {
     /**
      * кол-во ячеек сетки по ширине
      */
@@ -30,6 +29,7 @@ public abstract class GridPanel extends Panel{
      * кол-во строк, занимаемых панелью
      */
     protected final int rowspan;
+
     /**
      * Конструктор панели
      *

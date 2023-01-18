@@ -84,6 +84,21 @@ public abstract class Panel implements Consumer<Event> {
         paintImpl(canvas, windowCS);
         // восстанавливаем область рисования
         canvas.restore();
+
+        // сохраняем СК окна
+        lastWindowCS = windowCS;
+    }
+
+    /**
+     * Проверка, содержит ли панель координаты
+     *
+     * @param pos положение
+     * @return флаг, содержит или нет
+     */
+    public boolean contains(Vector2i pos) {
+        if (lastWindowCS != null)
+            return lastWindowCS.checkCoords(pos);
+        return false;
     }
 
     /**
@@ -93,5 +108,21 @@ public abstract class Panel implements Consumer<Event> {
      * @param windowCS СК окна
      */
     public abstract void paintImpl(Canvas canvas, CoordinateSystem2i windowCS);
+    /**
+     * Обработчик событий
+     * при перегрузке обязателен вызов реализации предка
+     *
+     * @param e событие
+     */
+    @Override
+    public void accept(Event e) {
+        if (e instanceof EventMouseMove ee) {
+            // сохраняем последнее положение мыши
+            lastMove = new Vector2i(ee);
+            // сохраняем флаг, был ли курсор внутри панели
+            lastInside = contains(lastMove);
+        }
+    }
+
 
 }

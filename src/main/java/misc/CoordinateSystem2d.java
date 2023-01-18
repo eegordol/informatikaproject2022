@@ -1,88 +1,83 @@
 package misc;
 
-import io.github.humbleui.skija.RRect;
-import io.github.humbleui.skija.Rect;
-
 import java.util.Objects;
 
 /**
- * Ограниченная двумерная целочисленная система координат
+ * ограниченной двумерной вещественной системы координат
  */
-public class CoordinateSystem2i {
+public class CoordinateSystem2d {
     /**
      * максимальная координата
      */
-    private final Vector2i max;
+
+    private Vector2d max;
     /**
      * минимальная координата
      */
-    private final Vector2i min;
+
+    private Vector2d min;
     /**
      * размер СК
      */
-    private final Vector2i size;
+    private Vector2d size;
 
     /**
-     * Конструктор ограниченной двумерной целочисленной системы координат
+     * Конструктор ограниченной двумерной вещественной системы координат
      *
      * @param minX  минимальная X координата
      * @param minY  минимальная Y координата
      * @param sizeX размер по оси X
      * @param sizeY размер по оси Y
      */
-    public CoordinateSystem2i(int minX, int minY, int sizeX, int sizeY) {
-        min = new Vector2i(minX, minY);
-        size = new Vector2i(sizeX, sizeY);
-        max = Vector2i.sum(size, min);
-        max.dec();
+    public CoordinateSystem2d(double minX, double minY, double sizeX, double sizeY) {
+        set(minX, minY, sizeX, sizeY);
     }
 
     /**
-     * Конструктор ограниченной двумерной целочисленной системы координат
+     * Конструктор ограниченной двумерной вещественной системы координат
      *
      * @param sizeX размер по оси X
      * @param sizeY размер по оси Y
      */
-    public CoordinateSystem2i(int sizeX, int sizeY) {
+    public CoordinateSystem2d(double sizeX, double sizeY) {
         this(0, 0, sizeX, sizeY);
     }
+
+
+    /**
+     * Конструктор ограниченной двумерной вещественной системы координат
+     *
+     * @param min минимальные координаты
+     * @param max максимальные координаты
+     */
+    public CoordinateSystem2d(Vector2d min, Vector2d max) {
+        this(min.x, min.y, max.x - min.x, max.y - min.y);
+    }
+
+
+    /**
+     * Задать новые границы
+     *
+     * @param minX  минимальная x-координата
+     * @param minY  максимальная x-координата
+     * @param sizeX размер по оси X
+     * @param sizeY размер по оси Y
+     */
+    public void set(double minX, double minY, double sizeX, double sizeY) {
+        min = new Vector2d(minX, minY);
+        size = new Vector2d(sizeX, sizeY);
+        max = Vector2d.sum(size, min);
+    }
+
 
     /**
      * Получить случайные координаты внутри СК
      *
      * @return случайные координаты внутри СК
      */
-    public Vector2i getRandomCoords() {
-        return Vector2i.rand(min, max);
-    }
-
-    /**
-     * Возвращает относительное положение вектора в СК
-     *
-     * @param pos положение
-     * @return относительное положение
-     */
-    public Vector2i getRelativePos(Vector2i pos) {
-        return Vector2i.subtract(pos, min);
-    }
-
-    /**
-     * Получить квадрат по СК
-     *
-     * @return квадрат
-     */
-    public Rect getRect() {
-        return Rect.makeXYWH(min.x, min.y, size.x, size.y);
-    }
-
-    /**
-     * Получить скруглённый квадрат по СК
-     *
-     * @param rad радиус скругления
-     * @return квадрат
-     */
-    public RRect getRRect(float rad) {
-        return RRect.makeXYWH(min.x, min.y, size.x, size.y, rad);
+    public Vector2d getRandomCoords() {
+        Vector2d r = Vector2d.rand(min, max);
+        return r;
     }
 
     /**
@@ -91,8 +86,8 @@ public class CoordinateSystem2i {
      * @param coords координаты вектора
      * @return флаг, попадают ли координаты в границы СК
      */
-    public boolean checkCoords(Vector2i coords) {
-        return checkCoords(coords.x, coords.y);
+    public boolean checkCoords(Vector2d coords) {
+        return coords.x >= min.x && coords.y >= min.y && coords.x <= max.x && coords.y <= max.y;
     }
 
     /**
@@ -102,8 +97,61 @@ public class CoordinateSystem2i {
      * @param y координата Y
      * @return флаг, попадают ли координаты в границы СК
      */
-    public boolean checkCoords(int x, int y) {
-        return x > min.x && y > min.y && x < max.x && y < max.y;
+    public boolean checkCoords(double x, double y) {
+        return checkCoords(new Vector2d(x, y));
+    }
+
+
+    /**
+     * Получить координаты вектора в текущей систему координат
+     *
+     * @param coords           координаты вектора в другой системе координат
+     * @param coordinateSystem система координат, в которой заданы координаты вектора
+     * @return координаты вектора в текущей системе координат
+     */
+    public Vector2d getCoords(Vector2d coords, CoordinateSystem2d coordinateSystem) {
+        return getCoords(coords.x, coords.y, coordinateSystem);
+    }
+
+    /**
+     * Получить координаты вектора в текущей систему координат
+     *
+     * @param x                координата X вектора в другой системе координат
+     * @param y                координата Y вектора в другой системе координат
+     * @param coordinateSystem система координат, в которой заданы координаты вектора
+     * @return координаты вектора в текущей системе координат
+     */
+    public Vector2d getCoords(double x, double y, CoordinateSystem2d coordinateSystem) {
+        return new Vector2d(
+                (x - coordinateSystem.min.x) * size.x / coordinateSystem.size.x + min.x,
+                (y - coordinateSystem.min.y) * size.y / coordinateSystem.size.y + min.y
+        );
+    }
+
+    /**
+     * Получить координаты вектора в текущей систему координат
+     *
+     * @param coords           координаты вектора в другой системе координат
+     * @param coordinateSystem система координат, в которой заданы координаты вектора
+     * @return координаты вектора в текущей системе координат
+     */
+    public Vector2d getCoords(Vector2i coords, CoordinateSystem2i coordinateSystem) {
+        return this.getCoords(coords.x, coords.y, coordinateSystem);
+    }
+
+    /**
+     * Получить координаты вектора в текущей систему координат
+     *
+     * @param x                координата X вектора в другой системе координат
+     * @param y                координата Y вектора в другой системе координат
+     * @param coordinateSystem система координат, в которой заданы координаты вектора
+     * @return координаты вектора в текущей системе координат
+     */
+    public Vector2d getCoords(int x, int y, CoordinateSystem2i coordinateSystem) {
+        return new Vector2d(
+                (x - coordinateSystem.getMin().x) * size.x / (coordinateSystem.getSize().x - 1) + min.x,
+                (y - coordinateSystem.getMin().y) * size.y / (coordinateSystem.getSize().y - 1) + min.y
+        );
     }
 
     /**
@@ -111,7 +159,7 @@ public class CoordinateSystem2i {
      *
      * @return максимальная координата
      */
-    public Vector2i getMax() {
+    public Vector2d getMax() {
         return max;
     }
 
@@ -120,7 +168,7 @@ public class CoordinateSystem2i {
      *
      * @return минимальная координата
      */
-    public Vector2i getMin() {
+    public Vector2d getMin() {
         return min;
     }
 
@@ -129,71 +177,18 @@ public class CoordinateSystem2i {
      *
      * @return размер СК
      */
-    public Vector2i getSize() {
+    public Vector2d getSize() {
         return size;
     }
 
     /**
-     * Получить координаты вектора в текущей системе координат
-     *
-     * @param coords           координаты вектора в другой системе координат
-     * @param coordinateSystem система координат, в которой заданы координаты вектора
-     * @return координаты вектора в текущей системе координат
-     */
-    public Vector2i getCoords(Vector2d coords, CoordinateSystem2d coordinateSystem) {
-        return getCoords(coords.x, coords.y, coordinateSystem);
-    }
-
-    /**
-     * Получить координаты вектора в текущей системе координат
-     *
-     * @param x                координата X вектора в другой системе координат
-     * @param y                координата Y вектора в другой системе координат
-     * @param coordinateSystem система координат, в которой заданы координаты вектора
-     * @return координаты вектора в текущей системе координат
-     */
-    public Vector2i getCoords(double x, double y, CoordinateSystem2d coordinateSystem) {
-        return new Vector2i(
-                (int) ((x - coordinateSystem.getMin().x) * (size.x - 1) / coordinateSystem.getSize().x + min.x),
-                (int) ((y - coordinateSystem.getMin().y) * (size.y - 1) / coordinateSystem.getSize().y + min.y)
-        );
-    }
-
-    /**
-     * Получить координаты вектора в текущей системе координат
-     *
-     * @param coords           координаты вектора в другой системе координат
-     * @param coordinateSystem система координат, в которой заданы координаты вектора
-     * @return координаты вектора в текущей системе координат
-     */
-    public Vector2i getCoords(Vector2i coords, CoordinateSystem2i coordinateSystem) {
-        return this.getCoords(coords.x, coords.y, coordinateSystem);
-    }
-
-    /**
-     * Получить координаты вектора в текущей системе координат
-     *
-     * @param x                координата X вектора в другой системе координат
-     * @param y                координата Y вектора в другой системе координат
-     * @param coordinateSystem система координат, в которой заданы координаты вектора
-     * @return координаты вектора в текущей системе координат
-     */
-    public Vector2i getCoords(int x, int y, CoordinateSystem2i coordinateSystem) {
-        return new Vector2i(
-                (x - coordinateSystem.min.x) * (size.x - 1) / (coordinateSystem.size.x - 1) + min.x,
-                (y - coordinateSystem.min.y) * (size.y - 1) / (coordinateSystem.size.y - 1) + min.y
-        );
-    }
-
-
-    /**
      * Строковое представление объекта вида:
      *
-     * @return "CoordinateSystem2i{min, max}"
+     * @return "CoordinateSystem2d{min, max}"
      */
     @Override
     public String toString() {
-        return "CoordinateSystem2i{" + min + ", " + max + '}';
+        return "CoordinateSystem2d{" + min + ", " + max + '}';
     }
 
     /**
@@ -207,7 +202,7 @@ public class CoordinateSystem2i {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CoordinateSystem2i that = (CoordinateSystem2i) o;
+        CoordinateSystem2d that = (CoordinateSystem2d) o;
 
         if (!Objects.equals(max, that.max)) return false;
         return Objects.equals(min, that.min);

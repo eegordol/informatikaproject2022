@@ -41,7 +41,6 @@ public class PanelControl extends GridPanel {
         label = new Label(window, false, PANEL_BACKGROUND_COLOR, PANEL_PADDING,
                 1, 1, 0, 0, 1, 1, "Панель управления", true, true);
 
-
     }
 
     /**

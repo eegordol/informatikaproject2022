@@ -1,7 +1,8 @@
 package panels;
 
 import controls.Label;
-import io.github.humbleui.jwm.*;
+import io.github.humbleui.jwm.Event;
+import io.github.humbleui.jwm.Window;
 import io.github.humbleui.skija.Canvas;
 import misc.CoordinateSystem2i;
 
@@ -9,7 +10,7 @@ import static app.Application.PANEL_PADDING;
 import static app.Colors.PANEL_BACKGROUND_COLOR;
 
 /**
- * Панель управления
+ * Панель поддержки
  */
 public class PanelHelp extends GridPanel {
     /**
@@ -39,8 +40,7 @@ public class PanelHelp extends GridPanel {
 
         // создаём первый заголовок
         label = new Label(window, false, PANEL_BACKGROUND_COLOR, PANEL_PADDING,
-                1, 1, 0, 0, 1, 1, "Панель управления", true, true);
-
+                1, 1, 0, 0, 1, 1, "Панель помощи", true, true);
 
     }
 

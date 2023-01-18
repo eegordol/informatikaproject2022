@@ -6,7 +6,10 @@ import misc.Misc;
  * Класс цветов
  */
 public class Colors {
-
+    /**
+     * цвет фона
+     */
+    public static final int APP_BACKGROUND_COLOR = Misc.getColor(255, 38, 70, 83);
     /**
      * Цвет текста заголовка
      */
@@ -15,11 +18,6 @@ public class Colors {
      * цвет подложки панелей
      */
     public static final int PANEL_BACKGROUND_COLOR = Misc.getColor(32, 0, 0, 0);
-
-    /**
-     * цвет фона
-     */
-    public static final int APP_BACKGROUND_COLOR = Misc.getColor(255, 38, 70, 83);
 
     /**
      * Запрещённый конструктор

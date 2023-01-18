@@ -27,6 +27,7 @@ public class Label extends GridPanel {
      * Флаг, нужно ли выравнивать текст по центру по вертикали
      */
     protected boolean vcentered;
+
     /**
      * Панель на сетке
      *
@@ -53,8 +54,9 @@ public class Label extends GridPanel {
         this.centered = centered;
         this.vcentered = vcentered;
     }
+
     /**
-     * Метод рисованияв конкретной реализации
+     * Метод под рисование в конкретной реализации
      *
      * @param canvas   область рисования
      * @param windowCS СК окна
