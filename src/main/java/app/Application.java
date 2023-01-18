@@ -16,6 +16,10 @@ import static app.Colors.APP_BACKGROUND_COLOR;
 
 public class Application implements Consumer<Event> {
     /**
+     * радиус скругления элементов
+     */
+    public static final int C_RAD_IN_PX = 4;
+    /**
      * окно приложения
      */
     private final Window window;
@@ -96,7 +100,7 @@ public class Application implements Consumer<Event> {
                 windowCS.getSize().x / 3, windowCS.getSize().y / 3
         );
         // рисуем квадрат
-        canvas.drawRRect(rectCS.getRRect(4), paint);
+        canvas.drawRRect(rectCS.getRRect(C_RAD_IN_PX), paint);
         // восстанавливаем состояние канваса
         canvas.restore();
     }
