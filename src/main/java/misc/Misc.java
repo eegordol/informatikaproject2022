@@ -21,13 +21,6 @@ public class Misc {
         return ((a * 256 + r) * 256 + g) * 256 + b;
     }
 
-
-    /**
-     * Запрещаем вызов конструктора
-     */
-    private Misc() {
-        throw new AssertionError("Вызов этого конструктора запрещён");
-    }
     /**
      * Сформировать набор строк не превышающих заданную длину
      *
@@ -65,6 +58,13 @@ public class Misc {
         lst.add(line);
         // возвращаем его
         return lst;
+    }
+
+    /**
+     * Запрещаем вызов конструктора
+     */
+    private Misc() {
+        throw new AssertionError("Вызов этого конструктора запрещён");
     }
 
 }

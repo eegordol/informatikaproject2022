@@ -126,4 +126,5 @@ public class MultiLineLabel extends GridPanel {
         // восстанавливаем области рисования
         canvas.restore();
     }
+
 }

@@ -84,10 +84,17 @@ public abstract class Panel implements Consumer<Event> {
         paintImpl(canvas, windowCS);
         // восстанавливаем область рисования
         canvas.restore();
-
         // сохраняем СК окна
         lastWindowCS = windowCS;
     }
+
+    /**
+     * Метод под рисование в конкретной реализации
+     *
+     * @param canvas   область рисования
+     * @param windowCS СК окна
+     */
+    public abstract void paintImpl(Canvas canvas, CoordinateSystem2i windowCS);
 
     /**
      * Проверка, содержит ли панель координаты
@@ -101,13 +108,6 @@ public abstract class Panel implements Consumer<Event> {
         return false;
     }
 
-    /**
-     * Метод рисованияв конкретной реализации
-     *
-     * @param canvas   область рисования
-     * @param windowCS СК окна
-     */
-    public abstract void paintImpl(Canvas canvas, CoordinateSystem2i windowCS);
     /**
      * Обработчик событий
      * при перегрузке обязателен вызов реализации предка
@@ -123,6 +123,4 @@ public abstract class Panel implements Consumer<Event> {
             lastInside = contains(lastMove);
         }
     }
-
-
 }
