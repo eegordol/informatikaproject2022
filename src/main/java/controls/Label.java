@@ -1,6 +1,8 @@
 package controls;
 
 import io.github.humbleui.jwm.Event;
+import io.github.humbleui.jwm.EventMouseButton;
+import io.github.humbleui.jwm.EventMouseScroll;
 import io.github.humbleui.jwm.Window;
 import io.github.humbleui.skija.Canvas;
 import io.github.humbleui.skija.Paint;
@@ -10,6 +12,7 @@ import panels.GridPanel;
 
 import static app.Colors.LABEL_TEXT_COLOR;
 import static app.Fonts.FONT12;
+import static panels.PanelRendering.task;
 
 /**
  * Заголовок
@@ -86,11 +89,27 @@ public class Label extends GridPanel {
 
     /**
      * Обработчик событий
+     * при перегрузке обязателен вызов реализации предка
      *
      * @param e событие
      */
     @Override
     public void accept(Event e) {
-
+        // вызов обработчика предка
+        super.accept(e);
+        // если событие - это клик мышью
+        if (e instanceof EventMouseButton ee) {
+            // если последнее положение мыши сохранено и курсор был внутри
+            if (lastMove != null && lastInside && ee.isPressed()) {
+                // если событие - нажатие мыши
+                if (ee.isPressed())
+                    // обрабатываем клик по задаче
+                    task.click(lastWindowCS.getRelativePos(lastMove), ee.getButton());
+            }
+        } else if (e instanceof EventMouseScroll ee) {
+            if (lastMove != null && lastInside)
+                task.scale(ee.getDeltaY(), lastWindowCS.getRelativePos(lastMove));
+            window.requestFrame();
+        }
     }
 }

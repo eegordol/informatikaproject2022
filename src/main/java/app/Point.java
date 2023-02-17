@@ -133,4 +133,5 @@ public class Point {
     public int hashCode() {
         return Objects.hash(pointSet, pos);
     }
+
 }
