@@ -8,6 +8,7 @@ import io.github.humbleui.jwm.Window;
 import io.github.humbleui.skija.Canvas;
 import misc.CoordinateSystem2d;
 import misc.CoordinateSystem2i;
+import misc.Stats;
 import misc.Vector2d;
 
 import java.io.File;
@@ -21,6 +22,10 @@ import static app.Fonts.FONT12;
  * Панель рисования
  */
 public class PanelRendering extends GridPanel {
+    /**
+     * Статистика fps
+     */
+    private final Stats fpsStats;
     /**
      * Представление проблемы
      */
@@ -44,8 +49,9 @@ public class PanelRendering extends GridPanel {
             Window window, boolean drawBG, int color, int padding, int gridWidth, int gridHeight,
             int gridX, int gridY, int colspan, int rowspan
     ) {
-        super(window, drawBG, color, padding, gridWidth, gridHeight, gridX, gridY, colspan, rowspan);
 
+        super(window, drawBG, color, padding, gridWidth, gridHeight, gridX, gridY, colspan, rowspan);
+        fpsStats = new Stats();
         // ОСК от [-10.0,-10.0] до [10.0,10.0]
         CoordinateSystem2d cs = new CoordinateSystem2d(
                 new Vector2d(-10.0, -10.0), new Vector2d(10.0, 10.0)
@@ -83,7 +89,11 @@ public class PanelRendering extends GridPanel {
      */
     @Override
     public void paintImpl(Canvas canvas, CoordinateSystem2i windowCS) {
+        // рисуем задачу
         task.paint(canvas, windowCS);
+        // рисуем статистику фпс
+        fpsStats.paint(canvas, windowCS, FONT12, padding);
+        // рисуем перекрестие, если мышь внутри области рисования этой панели
         if (lastInside && lastMove != null)
             task.paintMouse(canvas, windowCS, FONT12, lastWindowCS.getRelativePos(lastMove));
     }
